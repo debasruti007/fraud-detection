@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fairness Audit</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+  <nav>
+    <span class="brand">Claim Risk Review</span>
+    <a href="index.html">Score a claim</a>
+    <a href="fairness.html" class="active">Fairness audit</a>
+  </nav>
+
+  <main>
+    <h1>Fairness audit</h1>
+    <p class="sub">Who gets flagged for review, broken down by group. Age and sex are not model inputs;
+      they are used here only to check the results afterwards.</p>
+
+    <div id="error" class="error hidden"></div>
+
+    <section class="card">
+      <h3 style="margin-top:0">Model summary</h3>
+      <p id="summary" class="muted">Loading...</p>
+    </section>
+
+    <section class="card">
+      <label for="group-select">Break down by</label>
+      <select id="group-select" style="max-width:260px; margin-bottom:14px"></select>
+
+      <div id="ratio-box"></div>
+      <div class="chart-wrap"><canvas id="chart"></canvas></div>
+
+      <table style="margin-top:18px">
+        <thead>
+          <tr>
+            <th>Group</th><th>Claims</th><th>Flagged</th><th>Actually fraud</th>
+            <th>Fraud caught</th><th>Honest claims wrongly flagged</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+      <p class="muted">Greyed rows have too few claims to trust and are left out of the ratios.</p>
+    </section>
+
+    <section class="card">
+      <h3 style="margin-top:0">How to read this</h3>
+      <p class="muted"><b>Flagged</b> is the share of a group's claims sent for review.
+        <b>Actually fraud</b> is the share that really were fraud in the data, so you can see whether a higher
+        flag rate matches a higher real fraud rate. <b>Honest claims wrongly flagged</b> is the most important
+        column for fairness: it shows who gets pulled into review without cause.</p>
+      <p class="muted"><b>Not-flagged ratio</b> compares the group least often left alone with the group most often
+        left alone. The "80% rule" is a screening rule of thumb, not a legal test, and it is noisy for groups of
+        a few hundred claims. A value below 0.80 is a reason to investigate, not proof of bias.</p>
+      <p class="muted"><b>Limitations:</b> the training data is a public synthetic dataset of 1,000 claims, so these
+        results show the audit method working, not how a real insurer's model would behave. Every flagged claim
+        goes to a human reviewer; nothing is rejected automatically.</p>
+    </section>
+  </main>
+
+  <script src="fairness.js"></script>
+</body>
+</html>

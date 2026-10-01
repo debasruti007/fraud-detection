@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claim Fraud-Risk Scoring</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+  <nav>
+    <span class="brand">Claim Risk Review</span>
+    <a href="index.html" class="active">Score a claim</a>
+    <a href="fairness.html">Fairness audit</a>
+  </nav>
+
+  <main>
+    <h1>Score a claim</h1>
+    <p class="sub">Enter the claim details. The model returns a fraud-risk score and shows which fields drove it.
+      Age, sex, tenure and occupation are deliberately not asked for.</p>
+
+    <form id="claim-form" class="card">
+      <div id="fields" class="grid">Loading form...</div>
+      <div class="actions">
+        <button type="submit" class="primary" id="submit-btn">Score claim</button>
+        <button type="button" class="ghost" id="fill-high">Example: Major Damage</button>
+        <button type="button" class="ghost" id="fill-low">Example: Minor Damage</button>
+      </div>
+      <div id="error" class="error hidden"></div>
+    </form>
+
+    <section id="result" class="card hidden">
+      <p class="muted">Fraud-risk score</p>
+      <p class="score" id="score">-</p>
+      <span class="badge" id="badge"></span>
+      <p class="muted" id="threshold-note"></p>
+
+      <h3>Why this score?</h3>
+      <p class="muted">Each bar shows how much a field pushed the score up (red) or down (blue) compared with an
+        average claim. Units are log-odds, so the bars are not percentages.</p>
+      <div class="chart-wrap"><canvas id="chart"></canvas></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
